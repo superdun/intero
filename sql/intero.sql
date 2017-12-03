@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2017-11-28 09:21:19
+Date: 2017-12-03 21:07:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,12 +43,17 @@ CREATE TABLE `post` (
   `view_count` int(11) DEFAULT NULL,
   `agree` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `disagree` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `post_user` (`user_id`),
+  CONSTRAINT `post_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of post
 -- ----------------------------
+INSERT INTO `post` VALUES ('28', '哈哈哈哈哈', '2017-12-03 17:16:45', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-03 17:16:45', '0', '25');
 
 -- ----------------------------
 -- Table structure for post_comment
@@ -60,14 +65,17 @@ CREATE TABLE `post_comment` (
   `agree` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `disagree` varchar(255) DEFAULT NULL,
+  `disagree` int(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `form` varchar(255) DEFAULT NULL,
-  `post` int(11) DEFAULT NULL,
-  `comment` int(11) DEFAULT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `post_id_post_comment` (`post`),
-  CONSTRAINT `post_id_post_comment` FOREIGN KEY (`post`) REFERENCES `post` (`id`) ON DELETE SET NULL
+  KEY `post_id_post_comment` (`post_id`),
+  KEY `post_comment_user` (`user_id`),
+  CONSTRAINT `post_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `post_id_post_comment` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -81,11 +89,11 @@ DROP TABLE IF EXISTS `post_field_mid`;
 CREATE TABLE `post_field_mid` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `post_id` int(11) DEFAULT NULL,
-  `filed_id` int(11) DEFAULT NULL,
+  `field_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `post_id_post_field_mid` (`post_id`),
-  KEY `field_id_post_field_mid` (`filed_id`),
-  CONSTRAINT `field_id_post_field_mid` FOREIGN KEY (`filed_id`) REFERENCES `field` (`id`) ON DELETE SET NULL,
+  KEY `field_id_post_field_mid` (`field_id`),
+  CONSTRAINT `field_id_post_field_mid` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`) ON DELETE SET NULL,
   CONSTRAINT `post_id_post_field_mid` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -140,7 +148,12 @@ CREATE TABLE `project` (
   `disagree` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `user_id` int(11) DEFAULT NULL,
+  `img` varchar(415) DEFAULT NULL,
+  `view_count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project_user` (`user_id`),
+  CONSTRAINT `project_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -160,11 +173,14 @@ CREATE TABLE `project_comment` (
   `disagree` int(11) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `form` varchar(255) DEFAULT NULL,
-  `project` int(11) DEFAULT NULL,
-  `comment` int(11) DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `project_id_project_comment` (`project`),
-  CONSTRAINT `project_id_project_comment` FOREIGN KEY (`project`) REFERENCES `project` (`id`) ON DELETE SET NULL
+  KEY `project_id_project_comment` (`project_id`),
+  KEY `project_comment_user` (`user_id`),
+  CONSTRAINT `project_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `project_id_project_comment` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -237,8 +253,12 @@ CREATE TABLE `question` (
   `view_count` int(11) DEFAULT NULL,
   `agree` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  `user_id` int(11) DEFAULT NULL,
+  `disagree` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question_user` (`user_id`),
+  CONSTRAINT `question_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of question
@@ -257,11 +277,14 @@ CREATE TABLE `question_comment` (
   `disagree` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `form` varchar(255) DEFAULT NULL,
-  `question` int(11) DEFAULT NULL,
-  `comment` int(11) DEFAULT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `question_id_question_comment` (`question`),
-  CONSTRAINT `question_id_question_comment` FOREIGN KEY (`question`) REFERENCES `question` (`id`) ON DELETE SET NULL
+  KEY `question_id_question_comment` (`question_id`),
+  KEY `question_comment_user` (`user_id`),
+  CONSTRAINT `question_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `question_id_question_comment` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -326,30 +349,57 @@ CREATE TABLE `question_tag_mid` (
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `auth` int(11) DEFAULT NULL,
+  `username` varchar(255) DEFAULT '',
+  `auth` int(11) DEFAULT '1',
   `password` varchar(255) DEFAULT NULL,
-  `mobile` varchar(45) DEFAULT NULL,
+  `mobile` varchar(45) DEFAULT '',
   `work_id` varchar(45) DEFAULT NULL,
   `content` varchar(255) DEFAULT NULL,
   `avartar` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `level` int(11) DEFAULT NULL,
-  `prestige` int(11) DEFAULT NULL,
-  `v` int(11) DEFAULT NULL,
+  `level_id` int(11) DEFAULT '1',
+  `prestige_id` int(11) DEFAULT '1',
+  `v_id` int(11) DEFAULT '1',
+  `email` varchar(255) DEFAULT '',
+  `major_id` int(11) DEFAULT NULL,
+  `degree_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `level_id` (`level`),
-  KEY `prestige_id` (`prestige`),
-  KEY `v_id` (`v`),
-  CONSTRAINT `level_id` FOREIGN KEY (`level`) REFERENCES `user_level` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `prestige_id` FOREIGN KEY (`prestige`) REFERENCES `user_prestige` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `v_id` FOREIGN KEY (`v`) REFERENCES `user_v` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `username` (`username`) USING BTREE,
+  UNIQUE KEY `email` (`mobile`) USING BTREE,
+  UNIQUE KEY `mobie` (`mobile`),
+  KEY `level_id` (`level_id`),
+  KEY `prestige_id` (`prestige_id`),
+  KEY `v_id` (`v_id`),
+  KEY `major_id` (`major_id`),
+  KEY `degree_id` (`degree_id`),
+  CONSTRAINT `degree_id` FOREIGN KEY (`degree_id`) REFERENCES `user_degree` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `level_id` FOREIGN KEY (`level_id`) REFERENCES `user_level` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `major_id` FOREIGN KEY (`major_id`) REFERENCES `user_major` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `prestige_id` FOREIGN KEY (`prestige_id`) REFERENCES `user_prestige` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `v_id` FOREIGN KEY (`v_id`) REFERENCES `user_v` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'antshell', '0', 'lhz', 'antshell', null, null, null, null, null, null, null);
+INSERT INTO `user` VALUES ('25', 'test', '0', '$5$rounds=535000$kRmKRJvJFoyPs/fZ$HiJB1CtHexAzz8zMLRb2XcO5VEjrukZpUmaUtkHgIn0', null, null, null, null, '2017-12-03 18:22:22', null, null, null, null, null, null);
+
+-- ----------------------------
+-- Table structure for user_degree
+-- ----------------------------
+DROP TABLE IF EXISTS `user_degree`;
+CREATE TABLE `user_degree` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_degree
+-- ----------------------------
+INSERT INTO `user_degree` VALUES ('1', '本科');
+INSERT INTO `user_degree` VALUES ('2', '硕士研究生');
+INSERT INTO `user_degree` VALUES ('3', '博士研究生');
 
 -- ----------------------------
 -- Table structure for user_field_mid
@@ -379,11 +429,28 @@ CREATE TABLE `user_level` (
   `name` varchar(255) NOT NULL,
   `logo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_level
 -- ----------------------------
+INSERT INTO `user_level` VALUES ('1', '正常', '');
+INSERT INTO `user_level` VALUES ('2', '禁言', null);
+
+-- ----------------------------
+-- Table structure for user_major
+-- ----------------------------
+DROP TABLE IF EXISTS `user_major`;
+CREATE TABLE `user_major` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_major
+-- ----------------------------
+INSERT INTO `user_major` VALUES ('1', '化工');
 
 -- ----------------------------
 -- Table structure for user_prestige
@@ -394,11 +461,13 @@ CREATE TABLE `user_prestige` (
   `name` varchar(255) DEFAULT NULL,
   `avartar` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_prestige
 -- ----------------------------
+INSERT INTO `user_prestige` VALUES ('1', '菜鸟', null);
+INSERT INTO `user_prestige` VALUES ('2', '混世魔王', null);
 
 -- ----------------------------
 -- Table structure for user_v
@@ -410,9 +479,12 @@ CREATE TABLE `user_v` (
   `avartar` varchar(255) DEFAULT NULL,
   `star` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_v
 -- ----------------------------
+INSERT INTO `user_v` VALUES ('1', '普通', null, '1');
+INSERT INTO `user_v` VALUES ('2', '大牛', null, '3');
+INSERT INTO `user_v` VALUES ('3', '老师', null, '10');
 SET FOREIGN_KEY_CHECKS=1;
