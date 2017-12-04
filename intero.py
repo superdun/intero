@@ -12,7 +12,7 @@ def check_sign_up(data=None, **kw):
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!!'
+    return 'Hello World!!!'
 
 
 #APIS
