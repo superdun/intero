@@ -45,7 +45,7 @@ def user_auth_func(**kw):
 
 @jwt_required()
 def get_user_list(**kw):
-    if not current_identity.auth != 0:
+    if  current_identity.auth != 0:
         raise flask_restless.ProcessingException(description='Not authenticated!', code=401)
 
 
