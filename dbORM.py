@@ -247,8 +247,8 @@ class User(db.Model):
     major_id = db.Column(db.Integer, db.ForeignKey('user_major.id'))
     degree = db.relationship('UserMajor')
     major = db.relationship('UserDegree')
-    sended_msgs = db.relationship('Message',  lazy='dynamic',foreign_keys=Message.from_id)
-    recived_msgs = db.relationship('Message', lazy='dynamic',foreign_keys=Message.to_id)
+    sended_msgs = db.relationship('Message', backref='from',  lazy='dynamic',foreign_keys=Message.from_id)
+    recived_msgs = db.relationship('Message', backref='to', lazy='dynamic',foreign_keys=Message.to_id)
     recived_notifications = db.relationship('Notification', secondary="notification_user_mid",backref='User', lazy='dynamic')
     # def __init__(self,username=None,email=None, password=None,work_id=None,avartar=None,mobile=None,major_id=None,degree_id=None):
     #     self.username = username
