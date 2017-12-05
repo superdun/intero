@@ -195,7 +195,30 @@ class Question(db.Model):
     def __repr__(self):
         return '<Project %r>' % self.name
 
+# MSGS
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(2000))
+    from_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    to_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    def __repr__(self):
+        return '<Message %r>' % self.name
 
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(2000))
+    created_at = db.Column(db.DateTime, default=datetime.now())
+
+    def __repr__(self):
+        return '<Field %r>' % self.name
+
+class NotificationUserMid(db.Model):
+    __tablename__ = 'notification_user_mid'
+    id = db.Column(db.Integer, primary_key=True)
+    notification_id = db.Column(db.Integer, db.ForeignKey('notification.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    status = db.Column(db.String(80))
 # USER
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -224,6 +247,9 @@ class User(db.Model):
     major_id = db.Column(db.Integer, db.ForeignKey('user_major.id'))
     degree = db.relationship('UserMajor')
     major = db.relationship('UserDegree')
+    sended_msgs = db.relationship('Message',  lazy='dynamic',foreign_keys=Message.from_id)
+    recived_msgs = db.relationship('Message', lazy='dynamic',foreign_keys=Message.to_id)
+    recived_notifications = db.relationship('Notification', secondary="notification_user_mid",backref='User', lazy='dynamic')
     # def __init__(self,username=None,email=None, password=None,work_id=None,avartar=None,mobile=None,major_id=None,degree_id=None):
     #     self.username = username
     #     self.email = email
@@ -286,3 +312,4 @@ class Field(db.Model):
 
     def __repr__(self):
         return '<Field %r>' % self.name
+

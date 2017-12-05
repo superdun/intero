@@ -30,6 +30,6 @@ apiManager.create_api(Field, methods=['GET'],url_prefix=API_PREFIX)
 apiManager.create_api(PostTag, methods=['GET'],url_prefix=API_PREFIX)
 apiManager.create_api(ProjectTag, methods=['GET'],url_prefix=API_PREFIX)
 apiManager.create_api(QuestionTag, methods=['GET'],url_prefix=API_PREFIX)
-
+apiManager.create_api(Notification, methods=['GET'],url_prefix=API_PREFIX)
 if __name__ == '__main__':
     app.run()
