@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2017-12-03 21:07:32
+Date: 2017-12-05 23:07:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,6 +27,65 @@ CREATE TABLE `field` (
 
 -- ----------------------------
 -- Records of field
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for message
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) DEFAULT NULL,
+  `from_id` int(11) DEFAULT NULL,
+  `to_id` int(11) DEFAULT NULL,
+  `created_at` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `message_from_id` (`from_id`),
+  KEY `message_to_id` (`to_id`),
+  CONSTRAINT `message_from_id` FOREIGN KEY (`from_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `message_to_id` FOREIGN KEY (`to_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of message
+-- ----------------------------
+INSERT INTO `message` VALUES ('1', 'asdasd', '25', '25', null, null);
+
+-- ----------------------------
+-- Table structure for notification
+-- ----------------------------
+DROP TABLE IF EXISTS `notification`;
+CREATE TABLE `notification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) DEFAULT NULL,
+  `created_at` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of notification
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for notification_user_mid
+-- ----------------------------
+DROP TABLE IF EXISTS `notification_user_mid`;
+CREATE TABLE `notification_user_mid` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `notification_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `mid__User_id` (`user_id`),
+  KEY `mid_notification_id` (`notification_id`),
+  CONSTRAINT `mid__User_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `mid_notification_id` FOREIGN KEY (`notification_id`) REFERENCES `notification` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of notification_user_mid
 -- ----------------------------
 
 -- ----------------------------
@@ -48,12 +107,26 @@ CREATE TABLE `post` (
   PRIMARY KEY (`id`),
   KEY `post_user` (`user_id`),
   CONSTRAINT `post_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of post
 -- ----------------------------
 INSERT INTO `post` VALUES ('28', '哈哈哈哈哈', '2017-12-03 17:16:45', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-03 17:16:45', '0', '25');
+INSERT INTO `post` VALUES ('29', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('30', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('31', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('32', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('33', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('34', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('35', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('36', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('37', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('38', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('39', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('40', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('41', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
+INSERT INTO `post` VALUES ('42', '哈哈哈哈哈', '2017-12-04 22:13:29', 'HHHHHHHHHHHHHHHHHHHHHHHHHH', null, null, '0', '0', '2017-12-04 22:13:29', '0', '25');
 
 -- ----------------------------
 -- Table structure for post_comment
